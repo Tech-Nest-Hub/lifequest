@@ -1,15 +1,117 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
-  provider = "prisma-client"
-  output   = "../app/generated/prisma"
+  provider = "prisma-client-js"
 }
 
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
+}
+
+// ----------------------------
+// Users (Players / Characters)
+// ----------------------------
+model User {
+  id        String   @id @default(uuid())
+  username  String   @unique
+  email     String   @unique
+  password  String
+  createdAt DateTime @default(now())
+
+  // RPG-style progression
+  race       Race      @relation(fields: [raceId], references: [id])
+  raceId     String
+  subrace    Subrace?  @relation(fields: [subraceId], references: [id])
+  subraceId  String?
+  class      Class     @relation(fields: [classId], references: [id])
+  classId    String
+  level      Int       @default(1)
+  xp         Int       @default(0)
+  stats      Json      @default("{}") // STR, DEX, CON, INT, WIS, CHA
+
+  // LifeQuest stats
+  health     Int       @default(100)
+  energy     Int       @default(100)
+  skills     Json      @default("{}") // e.g., { learning: 0, work: 0, social: 0 }
+  money      Int       @default(0)
+
+  tasks      Task[]
+  badges     Badge[]
+  equipment  Equipment[]
+}
+
+// ----------------------------
+// Races & Subraces
+// ----------------------------
+model Race {
+  id           String    @id @default(uuid())
+  name         String    @unique
+  age          String?
+  alignment    String?
+  size         String?
+  speed        Int?
+  languages    Json?     // ["Common", "Elvish"]
+  subraces     Subrace[]
+  users        User[]
+}
+
+model Subrace {
+  id       String  @id @default(uuid())
+  name     String
+  traits   Json?   // bonus stats or traits
+  race     Race    @relation(fields: [raceId], references: [id])
+  raceId   String
+  users    User[]
+}
+
+// ----------------------------
+// Classes
+// ----------------------------
+model Class {
+  id          String   @id @default(uuid())
+  name        String   @unique
+  hitDie      String?
+  primaryStat String?
+  features    Json?    // abilities or perks
+  users       User[]
+}
+
+// ----------------------------
+// Equipment (tools for progression)
+// ----------------------------
+model Equipment {
+  id          String  @id @default(uuid())
+  user        User    @relation(fields: [userId], references: [id])
+  userId      String
+  name        String
+  type        String   // Tool, Armor, Consumable, Adventuring Gear
+  properties  Json?    // { energy: +10, skillBoost: 5, etc. }
+  quantity    Int      @default(1)
+  value       Int?
+}
+
+// ----------------------------
+// Tasks = Quests for Life Progression
+// ----------------------------
+model Task {
+  id          String   @id @default(uuid())
+  user        User     @relation(fields: [userId], references: [id])
+  userId      String
+  title       String
+  description String?
+  xpReward    Int
+  statEffects Json?   // e.g., { health: +5, energy: +3, skills: { learning: +2 } }
+  completed   Boolean @default(false)
+  createdAt   DateTime @default(now())
+}
+
+// ----------------------------
+// Badges / Achievements
+// ----------------------------
+model Badge {
+  id          String   @id @default(uuid())
+  user        User     @relation(fields: [userId], references: [id])
+  userId      String
+  name        String
+  description String?
+  unlockedAt  DateTime @default(now())
 }
