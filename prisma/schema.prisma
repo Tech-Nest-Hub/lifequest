@@ -14,31 +14,29 @@ model User {
   id        String   @id @default(uuid())
   username  String   @unique
   email     String   @unique
-  password  String
+  password  String?  // ✅ make optional for Google users
   createdAt DateTime @default(now())
 
-  // RPG-style progression
-  race       Race      @relation(fields: [raceId], references: [id])
-  raceId     String
-  subrace    Subrace?  @relation(fields: [subraceId], references: [id])
+  race       Race?      @relation(fields: [raceId], references: [id])
+  raceId     String?
+  subrace    Subrace?   @relation(fields: [subraceId], references: [id])
   subraceId  String?
-  class      Class     @relation(fields: [classId], references: [id])
-  classId    String
+  class      Class?     @relation(fields: [classId], references: [id])
+  classId    String?
+  
   level      Int       @default(1)
   xp         Int       @default(0)
-  stats      Json      @default("{}") // STR, DEX, CON, INT, WIS, CHA
+  stats      Json      @default("{}")
 
-  // LifeQuest stats
   health     Int       @default(100)
   energy     Int       @default(100)
-  skills     Json      @default("{}") // e.g., { learning: 0, work: 0, social: 0 }
+  skills     Json      @default("{}")
   money      Int       @default(0)
 
   tasks      Task[]
   badges     Badge[]
   equipment  Equipment[]
 }
-
 // ----------------------------
 // Races & Subraces
 // ----------------------------
