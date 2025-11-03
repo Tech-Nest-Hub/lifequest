@@ -38,6 +38,7 @@ export function LoginForm({
   className,
   ...props
 }: React.ComponentProps<"div">) {
+
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
       <Card>
@@ -58,6 +59,7 @@ export function LoginForm({
                       fill="currentColor"
                     />
                   </svg>
+                  
                   Login with Google
                 </Button>
               </Field>
