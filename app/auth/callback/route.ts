@@ -21,25 +21,39 @@ export async function GET(request: Request) {
 
     const user = data.session?.user
     if (user) {
+      // ✅ Ensure email exists
+      const email = user.email
+      if (!email) {
+        console.error("No email returned from Supabase OAuth")
+        return NextResponse.redirect(`${origin}/auth/auth-code-error`)
+      }
+
+      // ✅ Safe fallback for username
+      const username =
+        user.user_metadata.full_name ??
+        email.split("@")[0] // use email prefix if full_name is missing
+      const avatar_url = user.user_metadata.avatar_url ?? null
+
       try {
-        // ✅ Upsert user record in your Prisma user table
         await prisma.user.upsert({
           where: { id: user.id },
           update: {
-            email: user.email,
-            username: user.user_metadata.full_name ?? null,
+            email,
+            username,
           },
           create: {
             id: user.id,
-            email: user.email,
-            name: user.user_metadata.full_name ?? null,
-            avatar_url: user.user_metadata.avatar_url ?? null,
-            // you can also set defaults for your game here:
+            email,
+            username,
+            // Optional: avatar_url if you added it to your model
+            // avatar_url,
             level: 1,
             xp: 0,
             health: 100,
             energy: 100,
             money: 0,
+            stats: {},  // if you want default JSON
+            skills: {},
           },
         })
       } catch (err) {
@@ -47,17 +61,12 @@ export async function GET(request: Request) {
       }
     }
 
-    // ✅ Redirect user back to app after creating profile
     const forwardedHost = request.headers.get("x-forwarded-host")
     const isLocalEnv = process.env.NODE_ENV === "development"
 
-    if (isLocalEnv) {
-      return NextResponse.redirect(`${origin}${next}`)
-    } else if (forwardedHost) {
-      return NextResponse.redirect(`https://${forwardedHost}${next}`)
-    } else {
-      return NextResponse.redirect(`${origin}${next}`)
-    }
+    if (isLocalEnv) return NextResponse.redirect(`${origin}${next}`)
+    else if (forwardedHost) return NextResponse.redirect(`https://${forwardedHost}${next}`)
+    else return NextResponse.redirect(`${origin}${next}`)
   }
 
   return NextResponse.redirect(`${origin}/auth/auth-code-error`)
