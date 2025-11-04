@@ -1,28 +1,35 @@
 import { createClient } from "@/utils/supabase/server"
-import { cookies } from "next/headers"
 import prisma from "@/lib/prisma"
+import { redirect } from "next/navigation"
 
 export default async function Dashboard() {
-  const supabase = createClient(cookies())
-  const { data } = await supabase.auth.getSession()
+  const supabase = await createClient()
+  const { data: { session } } = await supabase.auth.getSession()
 
-  if (!data.session) {
-    // redirect to sign-in if no session
-    return (
-      <script>
-        {`window.location.href = "/auth/sign-in"`}
-      </script>
-    )
+  // Correct: use the destructured 'session' variable
+  if (!session) {
+    // Use Next.js redirect instead of script tag
+    redirect("/sign-in")
   }
 
   const dbUser = await prisma.user.findUnique({
-    where: { id: data.session.user.id },
+    where: { id: session.user.id }, // Use session.user.id
   })
+
+  // Handle case where user doesn't exist in database
+  if (!dbUser) {
+    return (
+      <div>
+        <h1>User not found</h1>
+        <p>Please contact support.</p>
+      </div>
+    )
+  }
 
   return (
     <div>
-      <h1>Welcome {dbUser?.username}</h1>
-      <p>Level: {dbUser?.level}</p>
+      <h1>Welcome {dbUser.username}</h1>
+      <p>Level: {dbUser.level}</p>
     </div>
   )
 }
