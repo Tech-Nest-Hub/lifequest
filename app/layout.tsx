@@ -13,8 +13,12 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Life Quest",
-  description: "Life Quest is the most biggest advance gamifying of your life activities and giving you a feel of real rpg file",
+  title: "My Life Quest - Gamify Your Life",
+  description: "Life Quest is the most biggest advance gamifying of your life activities and giving you a feel of real rpg life",
+   openGraph: {
+    title: "MyLifeQuest — Gamify Your Life",
+    description: "Turn your daily goals into quests and level up your real life.",
+  },
 };
 
 export default function RootLayout({
