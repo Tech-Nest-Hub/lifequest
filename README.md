@@ -125,7 +125,7 @@ Stats evolve based on activity type:
 * Mobile app (React Native / Expo)
 * Dynamic theming and music
 * AI quest suggestions (based on habits)
-
+.
 ---
 
 ## 💡 Vision Summary
