@@ -120,8 +120,7 @@ export function Hero() {
               ref={titleRef}
               className="text-5xl sm:text-6xl lg:text-7xl font-black leading-tight mb-6 tracking-tighter"
             >
-              <span className="title-word block text-white">GAMIFY</span>
-              <span className="title-word block text-white">YOUR</span>
+              <span className="title-word block text-white">GAMIFY YOUR</span>
               <span className="title-word inline-block bg-linear-to-r from-cyan-400 via-blue-500 to-cyan-400 bg-clip-text text-transparent">
                 LIFE
               </span>
@@ -137,7 +136,7 @@ export function Hero() {
             </p>
 
             <div ref={ctaRef} className="flex flex-col sm:flex-row gap-4">
-              <Link href="/signup" className="w-full sm:w-auto">
+              <Link href="/sign-up" className="w-full sm:w-auto">
                 <Button
                   size="lg"
                   className="w-full bg-linear-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700 text-white font-bold text-base px-8 py-6 rounded-lg gap-2 group transition-all duration-300 hover:shadow-lg hover:shadow-cyan-500/50"
