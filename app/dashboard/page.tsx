@@ -1,6 +1,7 @@
 import { createClient } from "@/utils/supabase/server"
 import prisma from "@/lib/prisma"
 import { redirect } from "next/navigation"
+import { ChartRadarDots } from "@/components/profile/radarcharts"
 
 export default async function Dashboard() {
   const supabase = await createClient()
@@ -29,6 +30,7 @@ export default async function Dashboard() {
   return (
     <div>
       <h1>Welcome {dbUser.username}</h1>
+      <ChartRadarDots/>
       <p>Level: {dbUser.level}</p>
     </div>
   )
