@@ -3,10 +3,10 @@
 import Link from "next/link"
 import { GamepadIcon, Facebook, Twitter, Instagram, Youtube } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import { useEffect, useRef } from "react"
+import { redirect } from "next/navigation"
 
 export function Navbar() {
-
+  
   return (
     <nav className="sticky top-0 z-50 border-b border-zinc-800/50 bg-black/80 backdrop-blur-xl">
       <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-4 sm:px-6 lg:px-8">
@@ -59,12 +59,15 @@ export function Navbar() {
           {/* Auth Buttons */}
           <div className="flex items-center gap-3">
             <Button
+            onClick={()=> redirect("/sign-in")}
               variant="ghost"
               className="text-zinc-400 hover:text-cyan-500 border border-zinc-700/50 hover:border-cyan-600"
             >
               Log In
             </Button>
-            <Button className="bg-linear-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700 text-white font-semibold">
+            <Button 
+                        onClick={()=> redirect("/sign-in")}
+            className="bg-linear-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700 text-white font-semibold">
               Sign Up
             </Button>
           </div>

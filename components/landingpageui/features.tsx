@@ -38,7 +38,11 @@ export function Features() {
       <div className="relative mx-auto max-w-7xl">
         {/* Section header */}
         <div className="mb-16 text-center">
-          <p className="text-cyan-400 text-sm font-semibold uppercase tracking-widest mb-4">Core Features</p>
+          <div className="inline-block">
+            <div className="px-4 py-2 rounded-full border border-cyan-500/40 bg-cyan-500/5 backdrop-blur-sm">
+              <p className="text-sm font-medium text-cyan-300 tracking-wide">Core Features</p>
+            </div>
+          </div>
           <h2 className="text-5xl sm:text-6xl lg:text-7xl font-black mb-4 leading-tight">
             <span className="text-white">Game-</span>
             <span className="bg-linear-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent">Changing</span>
