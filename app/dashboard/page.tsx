@@ -1,23 +1,20 @@
-import { createClient } from "@/utils/supabase/server"
-import prisma from "@/lib/prisma"
-import { redirect } from "next/navigation"
 import { ChartRadarDots } from "@/components/profile/radarcharts"
+import prisma from "@/lib/prisma"
+import { createClient } from "@/utils/supabase/server"
+import { redirect } from "next/navigation"
 
 export default async function Dashboard() {
   const supabase = await createClient()
   const { data: { session } } = await supabase.auth.getSession()
 
-  // Correct: use the destructured 'session' variable
   if (!session) {
-    // Use Next.js redirect instead of script tag
     redirect("/sign-in")
   }
 
   const dbUser = await prisma.user.findUnique({
-    where: { id: session.user.id }, // Use session.user.id
+    where: { id: session.user.id },
   })
 
-  // Handle case where user doesn't exist in database
   if (!dbUser) {
     return (
       <div>
@@ -27,11 +24,16 @@ export default async function Dashboard() {
     )
   }
 
+  // Example fallback if stats are empty
+  const stats = dbUser.stats
+    ? (dbUser.stats as Record<string, number>)
+    : { STR: 10, DEX: 10, CON: 10, INT: 10, WIS: 10, CHA: 10 }
+
   return (
-    <div>
-      <h1>Welcome {dbUser.username}</h1>
-      <ChartRadarDots/>
-      <p>Level: {dbUser.level}</p>
+    <div className="p-6 space-y-4">
+      <h1 className="text-2xl font-semibold">Welcome, {dbUser.username}!</h1>
+      <p>Level {dbUser.level} • XP: {dbUser.xp}</p>
+      <ChartRadarDots stats={stats} />
     </div>
   )
 }

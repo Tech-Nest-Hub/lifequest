@@ -18,31 +18,30 @@ import {
   ChartTooltipContent,
 } from "@/components/ui/chart"
 
-export const description = "A radar chart with dots"
+type ChartRadarDotsProps = {
+  stats: Record<string, number> // example: { STR: 12, DEX: 14, INT: 10, CHA: 8 }
+}
 
-const chartData = [
-  { month: "January", desktop: 186 },
-  { month: "February", desktop: 305 },
-  { month: "March", desktop: 237 },
-  { month: "April", desktop: 273 },
-  { month: "May", desktop: 209 },
-  { month: "June", desktop: 214 },
-]
+export function ChartRadarDots({ stats }: ChartRadarDotsProps) {
+  // Convert stats object to array for Recharts
+  const chartData = Object.entries(stats || {}).map(([key, value]) => ({
+    stat: key,
+    value,
+  }))
 
-const chartConfig = {
-  desktop: {
-    label: "Desktop",
-    color: "var(--chart-1)",
-  },
-} satisfies ChartConfig
+  const chartConfig = {
+    value: {
+      label: "Stat",
+      color: "var(--chart-1)",
+    },
+  } satisfies ChartConfig
 
-export function ChartRadarDots() {
   return (
     <Card>
       <CardHeader className="items-center">
-        <CardTitle>Radar Chart - Dots</CardTitle>
+        <CardTitle>Character Stats Overview</CardTitle>
         <CardDescription>
-          Showing total visitors for the last 6 months
+          Your current skill and attribute balance
         </CardDescription>
       </CardHeader>
       <CardContent className="pb-0">
@@ -52,16 +51,13 @@ export function ChartRadarDots() {
         >
           <RadarChart data={chartData}>
             <ChartTooltip cursor={false} content={<ChartTooltipContent />} />
-            <PolarAngleAxis dataKey="month" />
+            <PolarAngleAxis dataKey="stat" />
             <PolarGrid />
             <Radar
-              dataKey="desktop"
-              fill="var(--color-desktop)"
+              dataKey="value"
+              fill="var(--color-value)"
               fillOpacity={0.6}
-              dot={{
-                r: 4,
-                fillOpacity: 1,
-              }}
+              dot={{ r: 4, fillOpacity: 1 }}
             />
           </RadarChart>
         </ChartContainer>
@@ -71,7 +67,7 @@ export function ChartRadarDots() {
           Trending up by 5.2% this month <TrendingUp className="h-4 w-4" />
         </div>
         <div className="text-muted-foreground flex items-center gap-2 leading-none">
-          January - June 2024
+          Personal Progress — {new Date().getFullYear()}
         </div>
       </CardFooter>
     </Card>
