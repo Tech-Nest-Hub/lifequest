@@ -38,7 +38,7 @@ export function ChartRadarDots({ stats }: ChartRadarDotsProps) {
 
   return (
     <Card>
-      <CardHeader className="items-center">
+      <CardHeader className="items-center text-center">
         <CardTitle>Character Stats Overview</CardTitle>
         <CardDescription>
           Your current skill and attribute balance
@@ -47,7 +47,7 @@ export function ChartRadarDots({ stats }: ChartRadarDotsProps) {
       <CardContent className="pb-0">
         <ChartContainer
           config={chartConfig}
-          className="mx-auto aspect-square max-h-[250px]"
+          className="mx-auto aspect-square max-h-[400px]"
         >
           <RadarChart data={chartData}>
             <ChartTooltip cursor={false} content={<ChartTooltipContent />} />
@@ -62,14 +62,6 @@ export function ChartRadarDots({ stats }: ChartRadarDotsProps) {
           </RadarChart>
         </ChartContainer>
       </CardContent>
-      <CardFooter className="flex-col gap-2 text-sm">
-        <div className="flex items-center gap-2 leading-none font-medium">
-          Trending up by 5.2% this month <TrendingUp className="h-4 w-4" />
-        </div>
-        <div className="text-muted-foreground flex items-center gap-2 leading-none">
-          Personal Progress — {new Date().getFullYear()}
-        </div>
-      </CardFooter>
     </Card>
   )
 }

@@ -33,7 +33,14 @@ export default async function Dashboard() {
     <div className="p-6 space-y-4">
       <h1 className="text-2xl font-semibold">Welcome, {dbUser.username}!</h1>
       <p>Level {dbUser.level} • XP: {dbUser.xp}</p>
+      <div className="grid grid-cols-3">
+    <section id="mylifeqest-profile-image" className="">
+      <h2 className="text-lg font-medium mb-2">Your Stats</h2>
+    </section>
+    <section id="mylifeqest-radar-chart" className="col-span-1">
       <ChartRadarDots stats={stats} />
+    </section>
+      </div>
     </div>
   )
 }
