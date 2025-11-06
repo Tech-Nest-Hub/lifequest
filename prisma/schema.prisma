@@ -41,16 +41,12 @@ model User {
 // Races & Subraces
 // ----------------------------
 model Race {
-  id           String    @id @default(uuid())
-  name         String    @unique
-  age          String?
-  alignment    String?
-  size         String?
-  speed        Int?
-  languages    Json?     // ["Common", "Elvish"]
+  id    String @id @default(uuid())
+  name  String @unique
   subraces     Subrace[]
-  users        User[]
+  users User[]
 }
+
 
 model Subrace {
   id       String  @id @default(uuid())
@@ -65,12 +61,9 @@ model Subrace {
 // Classes
 // ----------------------------
 model Class {
-  id          String   @id @default(uuid())
-  name        String   @unique
-  hitDie      String?
-  primaryStat String?
-  features    Json?    // abilities or perks
-  users       User[]
+  id    String @id @default(uuid())
+  name  String @unique
+  users User[]
 }
 
 // ----------------------------

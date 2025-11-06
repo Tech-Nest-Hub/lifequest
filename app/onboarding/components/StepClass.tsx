@@ -13,7 +13,7 @@ interface StepClassProps {
   onSelectClass: (classId: string) => void
 }
 
-export function StepClass({ selectedClass, onSelectClass }: StepClassProps) {
+export default function StepClass({ selectedClass, onSelectClass }: StepClassProps) {
   const [classes, setClasses] = useState<Class[]>([])
 
   useEffect(() => {

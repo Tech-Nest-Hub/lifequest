@@ -8,7 +8,7 @@ interface StepNameProps {
   onChangeName: (name: string) => void
 }
 
-export function StepName({ name, onChangeName }: StepNameProps) {
+export default function StepName({ name, onChangeName }: StepNameProps) {
   return (
     <div className="space-y-4">
       <h2 className="text-xl font-bold">Choose your Character Name</h2>

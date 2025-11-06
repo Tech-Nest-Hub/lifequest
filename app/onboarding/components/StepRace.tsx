@@ -13,7 +13,7 @@ interface StepRaceProps {
   onSelectRace: (raceId: string) => void
 }
 
-export function StepRace({ selectedRace, onSelectRace }: StepRaceProps) {
+export default function StepRace({ selectedRace, onSelectRace }: StepRaceProps) {
   const [races, setRaces] = useState<Race[]>([])
 
   useEffect(() => {
