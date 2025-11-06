@@ -120,12 +120,6 @@ export default function CharacterDashboard() {
             classId={character.classId}
           />
 
-          <Resources
-            health={character.health}
-            energy={character.energy}
-            money={character.money}
-          />
-
           {/* Stats Component */}
           <div className="bg-linear-to-br from-cyan-900/20 to-blue-900/20 border border-cyan-500/30 rounded-2xl p-6 backdrop-blur-sm">
             <div className="flex items-center gap-2 mb-4">
