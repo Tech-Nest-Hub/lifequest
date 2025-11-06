@@ -53,7 +53,7 @@ export function Tasks({ tasks, onTaskToggle }: TasksProps) {
         ref={tasksRef} 
         className={`${
           expanded ? "max-h-[600px]" : "max-h-[250px]"
-        } bg-gradient-to-br from-cyan-900/20 to-blue-900/20 border border-cyan-500/30 rounded-2xl p-6 backdrop-blur-sm overflow-hidden transition-all duration-500`}
+        } bg-linear-to-br from-cyan-900/20 to-blue-900/20 border border-cyan-500/30 rounded-2xl p-6 backdrop-blur-sm overflow-hidden transition-all duration-500`}
       >
         <div className="mb-6">
           <h2 className="text-lg font-bold text-cyan-300 uppercase tracking-widest mb-2">Daily Quests</h2>
@@ -73,7 +73,7 @@ export function Tasks({ tasks, onTaskToggle }: TasksProps) {
               <div
                 className={`shrink-0 w-5 h-5 rounded border-2 flex items-center justify-center mt-0.5 transition-all duration-300 ${
                   task.completed
-                    ? "bg-gradient-to-br from-cyan-500 to-blue-500 border-cyan-400 text-white shadow-lg shadow-cyan-500/50"
+                    ? "bg-linear-to-br from-cyan-500 to-blue-500 border-cyan-400 text-white shadow-lg shadow-cyan-500/50"
                     : "border-cyan-400/40 group-hover:border-cyan-400/70 bg-black/20"
                 }`}
               >
@@ -100,9 +100,9 @@ export function Tasks({ tasks, onTaskToggle }: TasksProps) {
           ))}
         </div>
 
-        {/* Gradient fade for closed state */}
+        {/* linear fade for closed state */}
         {!expanded && (
-          <div className="absolute bottom-0 left-0 w-full h-20 bg-gradient-to-t from-cyan-950/80 to-transparent pointer-events-none rounded-b-2xl" />
+          <div className="absolute bottom-0 left-0 w-full h-20 bg-linear-to-t from-cyan-950/80 to-transparent pointer-events-none rounded-b-2xl" />
         )}
       </div>
 
