@@ -1,5 +1,6 @@
 import prisma from "@/lib/prisma";
 
+
 async function main() {
   const races = [
     { name: "Human" },

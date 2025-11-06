@@ -1,19 +1,22 @@
+"use client"
+
+import { useState } from "react"
+import { Input } from "@/components/ui/input"
+
 interface StepNameProps {
   name: string
-  setName: (val: string) => void
+  onChangeName: (name: string) => void
 }
 
-export default function StepName({ name, setName }: StepNameProps) {
+export function StepName({ name, onChangeName }: StepNameProps) {
   return (
-    <div className="text-center">
-      <h1 className="text-2xl font-bold">Choose Your Name</h1>
-      <p>How shall the world know you?</p>
-      <input
+    <div className="space-y-4">
+      <h2 className="text-xl font-bold">Choose your Character Name</h2>
+      <Input
         type="text"
+        placeholder="Enter your name"
         value={name}
-        onChange={(e) => setName(e.target.value)}
-        placeholder="Enter your character name"
-        className="mt-4 p-2 border rounded"
+        onChange={(e) => onChangeName(e.target.value)}
       />
     </div>
   )

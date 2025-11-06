@@ -1,19 +1,43 @@
-interface StepClassProps {
-  charClass: string | null
-  setCharClass: (val: string) => void
+"use client"
+
+import { useEffect, useState } from "react"
+import { Button } from "@/components/ui/button"
+
+interface Class {
+  id: string
+  name: string
 }
 
-export default function StepClass({ charClass, setCharClass }: StepClassProps) {
+interface StepClassProps {
+  selectedClass: string | null
+  onSelectClass: (classId: string) => void
+}
+
+export function StepClass({ selectedClass, onSelectClass }: StepClassProps) {
+  const [classes, setClasses] = useState<Class[]>([])
+
+  useEffect(() => {
+    async function fetchClasses() {
+      const res = await fetch("/api/classes")
+      const data = await res.json()
+      setClasses(data)
+    }
+    fetchClasses()
+  }, [])
+
   return (
-    <div className="text-center">
-      <h1 className="text-2xl font-bold">Choose Your Class</h1>
-      <p>Pick a class to define your abilities</p>
-      {/* Static placeholder */}
-      <div className="mt-4 space-y-2">
-        <button onClick={() => setCharClass("Fighter")}>Fighter</button>
-        <button onClick={() => setCharClass("Rogue")}>Rogue</button>
-        <button onClick={() => setCharClass("Cleric")}>Cleric</button>
-        <button onClick={() => setCharClass("Wizard")}>Wizard</button>
+    <div className="space-y-4">
+      <h2 className="text-xl font-bold">Choose your Class</h2>
+      <div className="grid grid-cols-2 gap-4">
+        {classes.map((cls) => (
+          <Button
+            key={cls.id}
+            variant={selectedClass === cls.id ? "default" : "outline"}
+            onClick={() => onSelectClass(cls.id)}
+          >
+            {cls.name}
+          </Button>
+        ))}
       </div>
     </div>
   )

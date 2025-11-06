@@ -1,21 +1,43 @@
-interface StepRaceProps {
-  race: string | null
-  setRace: (val: string) => void
-  subrace: string | null
-  setSubrace: (val: string) => void
+"use client"
+
+import { useEffect, useState } from "react"
+import { Button } from "@/components/ui/button"
+
+interface Race {
+  id: string
+  name: string
 }
 
-export default function StepRace({ race, setRace, subrace, setSubrace }: StepRaceProps) {
+interface StepRaceProps {
+  selectedRace: string | null
+  onSelectRace: (raceId: string) => void
+}
+
+export function StepRace({ selectedRace, onSelectRace }: StepRaceProps) {
+  const [races, setRaces] = useState<Race[]>([])
+
+  useEffect(() => {
+    async function fetchRaces() {
+      const res = await fetch("/api/races")
+      const data = await res.json()
+      setRaces(data)
+    }
+    fetchRaces()
+  }, [])
+
   return (
-    <div className="text-center">
-      <h1 className="text-2xl font-bold">Choose Your Race</h1>
-      <p>Pick a race to start your journey</p>
-      {/* Static placeholder */}
-      <div className="mt-4 space-y-2">
-        <button onClick={() => setRace("Elf")}>Elf</button>
-        <button onClick={() => setRace("Dwarf")}>Dwarf</button>
-        <button onClick={() => setRace("Human")}>Human</button>
-        <button onClick={() => setRace("Halfling")}>Halfling</button>
+    <div className="space-y-4">
+      <h2 className="text-xl font-bold">Choose your Race</h2>
+      <div className="grid grid-cols-2 gap-4">
+        {races.map((race) => (
+          <Button
+            key={race.id}
+            variant={selectedRace === race.id ? "default" : "outline"}
+            onClick={() => onSelectRace(race.id)}
+          >
+            {race.name}
+          </Button>
+        ))}
       </div>
     </div>
   )
