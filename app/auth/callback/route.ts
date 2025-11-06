@@ -5,68 +5,45 @@ import prisma from "@/lib/prisma"
 export async function GET(request: Request) {
   const { searchParams, origin } = new URL(request.url)
   const code = searchParams.get("code")
+  if (!code) return NextResponse.redirect(`${origin}/auth/auth-code-error`)
 
-  let next = searchParams.get("next") ?? "/"
-  if (!next.startsWith("/")) next = "/"
+  const supabase = await createClient()
+  const { data, error } = await supabase.auth.exchangeCodeForSession(code)
 
-  if (code) {
-    const supabase = await createClient()
-    const { data, error } = await supabase.auth.exchangeCodeForSession(code)
-
-    if (error) {
-      console.error("Exchange error:", error.message)
-      return NextResponse.redirect(`${origin}/auth/auth-code-error`)
-    }
-
-    const user = data.session?.user
-    if (user) {
-      // ✅ Ensure email exists
-      const email = user.email
-      if (!email) {
-        console.error("No email returned from Supabase OAuth")
-        return NextResponse.redirect(`${origin}/auth/auth-code-error`)
-      }
-
-      // ✅ Safe fallback for username
-      const username =
-        user.user_metadata.full_name ??
-        email.split("@")[0] // use email prefix if full_name is missing
-      const avatar_url = user.user_metadata.avatar_url ?? null
-
-      try {
-        await prisma.user.upsert({
-          where: { id: user.id },
-          update: {
-            email,
-            username,
-          },
-          create: {
-            id: user.id,
-            email,
-            username,
-            // Optional: avatar_url if you added it to your model
-            // avatar_url,
-            level: 1,
-            xp: 0,
-            health: 100,
-            energy: 100,
-            money: 0,
-            stats: {},  // if you want default JSON
-            skills: {},
-          },
-        })
-      } catch (err) {
-        console.error("Error creating user in DB:", err)
-      }
-    }
-
-    const forwardedHost = request.headers.get("x-forwarded-host")
-    const isLocalEnv = process.env.NODE_ENV === "development"
-
-    if (isLocalEnv) return NextResponse.redirect(`${origin}${next}`)
-    else if (forwardedHost) return NextResponse.redirect(`https://${forwardedHost}${next}`)
-    else return NextResponse.redirect(`${origin}${next}`)
+  if (error) {
+    console.error("Exchange error:", error.message)
+    return NextResponse.redirect(`${origin}/auth/auth-code-error`)
   }
 
-  return NextResponse.redirect(`${origin}/auth/auth-code-error`)
+  const user = data.session?.user
+  if (!user?.email) {
+    console.error("Missing email in OAuth response")
+    return NextResponse.redirect(`${origin}/auth/auth-code-error`)
+  }
+
+  const email = user.email
+  const username =
+    user.user_metadata.full_name ?? email.split("@")[0]
+  let dbUser = await prisma.user.findUnique({ where: { id: user.id } })
+
+  if (!dbUser) {
+    // Only create a "light" placeholder record
+    dbUser = await prisma.user.create({
+      data: {
+        id: user.id,
+        email,
+        username,
+        // avatar_url,
+        stats: {},
+        skills: {},
+        level: 0, // 0 means "not started onboarding"
+      },
+    })
+    console.log("🆕 New user created — redirecting to onboarding")
+    return NextResponse.redirect(`${origin}/onboarding`)
+  }
+
+  // Existing user goes straight to dashboard
+  console.log("✅ Existing user found — redirecting to dashboard")
+  return NextResponse.redirect(`${origin}/dashboard`)
 }
