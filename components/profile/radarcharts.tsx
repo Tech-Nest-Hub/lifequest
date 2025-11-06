@@ -1,13 +1,11 @@
 "use client"
 
-import { TrendingUp } from "lucide-react"
 import { PolarAngleAxis, PolarGrid, Radar, RadarChart } from "recharts"
 
 import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
@@ -39,7 +37,7 @@ export function ChartRadarDots({ stats }: ChartRadarDotsProps) {
   return (
     <Card>
       <CardHeader className="items-center text-center">
-        <CardTitle>Character Stats Overview</CardTitle>
+        <CardTitle className="mt-4">Character Stats Overview</CardTitle>
         <CardDescription>
           Your current skill and attribute balance
         </CardDescription>
@@ -47,7 +45,7 @@ export function ChartRadarDots({ stats }: ChartRadarDotsProps) {
       <CardContent className="pb-0">
         <ChartContainer
           config={chartConfig}
-          className="mx-auto aspect-square max-h-[400px]"
+          className="mx-auto aspect-square max-h-[250px]"
         >
           <RadarChart data={chartData}>
             <ChartTooltip cursor={false} content={<ChartTooltipContent />} />

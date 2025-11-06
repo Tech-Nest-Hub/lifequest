@@ -8,6 +8,8 @@ import { CharacterAvatar } from "./CharacterAvatar"
 import { QuestProgress } from "./QuestProgress"
 import { Resources } from "./Resources"
 import { Tasks } from "./Tasks"
+import { ChartAreaInteractive } from "./AreaChart"
+import { ChartRadarDots } from "./radarcharts"
 
 
 interface Character {
@@ -97,11 +99,11 @@ export default function CharacterDashboard() {
       {/* Animated background elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-10 left-10 w-80 h-80 bg-cyan-600/10 rounded-full blur-3xl animate-pulse" />
-        <div 
+        <div
           className="absolute bottom-10 right-10 w-80 h-80 bg-blue-600/10 rounded-full blur-3xl animate-pulse"
           style={{ animationDelay: '2000ms' }}
         />
-        <div 
+        <div
           className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-purple-600/5 rounded-full blur-3xl animate-pulse"
           style={{ animationDelay: '4000ms' }}
         />
@@ -111,14 +113,14 @@ export default function CharacterDashboard() {
         {/* LEFT PANEL - Character Stats */}
         <div ref={statsRef} className="space-y-6">
           <LevelCard character={character} />
-          
-          <CharacterAvatar 
+
+          <CharacterAvatar
             raceId={character.raceId}
             subraceId={character.subraceId}
             classId={character.classId}
           />
-          
-          <Resources 
+
+          <Resources
             health={character.health}
             energy={character.energy}
             money={character.money}
@@ -128,36 +130,40 @@ export default function CharacterDashboard() {
           <div className="bg-linear-to-br from-cyan-900/20 to-blue-900/20 border border-cyan-500/30 rounded-2xl p-6 backdrop-blur-sm">
             <div className="flex items-center gap-2 mb-4">
               <TrendingUp className="w-4 h-4 text-cyan-400" />
-              <span className="text-sm font-bold text-cyan-300 uppercase tracking-wider">Core Stats</span>
+              <span className="text-sm font-bold text-cyan-300 uppercase tracking-wider">Character Info</span>
             </div>
-            
-            <div className="space-y-3">
-              {Object.entries(character.stats).map(([stat, value]) => (
-                <div key={stat} className="flex items-center justify-between">
-                  <span className="text-sm text-cyan-200/80 capitalize">{stat}</span>
-                  <div className="flex items-center gap-2">
-                    <div className="w-16 h-2 bg-zinc-800/50 rounded-full overflow-hidden border border-cyan-500/20">
-                      <div 
-                        className="h-full bg-linear-to-r from-cyan-500 to-blue-500 rounded-full"
-                        style={{ width: `${(value / 400) * 100}%` }}
-                      />
-                    </div>
-                    <span className="text-sm font-bold text-cyan-400 w-8 text-right">{value}</span>
-                  </div>
-                </div>
-              ))}
+
+            {/* Character Info */}
+            <div className="space-y-2 text-sm mb-6 font-medium text-cyan-200/80">
+              <div className="flex justify-between">
+                <span>Race:</span>
+                <span className="text-cyan-400 capitalize">{character.raceId}</span>
+              </div>
+              <div className="flex justify-between">
+                <span>Subrace:</span>
+                <span className="text-cyan-400 capitalize">{character.subraceId}</span>
+              </div>
+              <div className="flex justify-between">
+                <span>Class:</span>
+                <span className="text-cyan-400 capitalize">{character.classId}</span>
+              </div>
             </div>
           </div>
         </div>
 
         {/* CENTER PANEL - Quest Progress */}
-        <QuestProgress 
-          completedTasks={completedTasks}
-          totalTasks={tasks.length}
-        />
+        <div className="flex flex-col gap-5">
+          <ChartRadarDots stats={character.stats}/>
+          <QuestProgress
+            completedTasks={completedTasks}
+            totalTasks={tasks.length}
+          />
+
+          <ChartAreaInteractive />
+        </div>
 
         {/* RIGHT PANEL - Tasks */}
-        <Tasks 
+        <Tasks
           tasks={tasks}
           onTaskToggle={toggleTask}
         />

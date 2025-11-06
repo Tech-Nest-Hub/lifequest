@@ -43,21 +43,7 @@ export function LevelCard({ character }: LevelCardProps) {
         </span>
       </div>
 
-      {/* Character Info */}
-      <div className="space-y-2 text-sm mb-6 font-medium text-cyan-200/80">
-        <div className="flex justify-between">
-          <span>Race:</span>
-          <span className="text-cyan-400 capitalize">{character.raceId}</span>
-        </div>
-        <div className="flex justify-between">
-          <span>Subrace:</span>
-          <span className="text-cyan-400 capitalize">{character.subraceId}</span>
-        </div>
-        <div className="flex justify-between">
-          <span>Class:</span>
-          <span className="text-cyan-400 capitalize">{character.classId}</span>
-        </div>
-      </div>
+     
 
       {/* XP Bar */}
       <div className="space-y-2">
