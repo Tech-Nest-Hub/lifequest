@@ -14,70 +14,73 @@ model User {
   id        String   @id @default(uuid())
   username  String   @unique
   email     String   @unique
-  password  String?  // ✅ make optional for Google users
+  password  String? // ✅ make optional for Google users
   createdAt DateTime @default(now())
 
-  race       Race?      @relation(fields: [raceId], references: [id])
-  raceId     String?
-  subrace    Subrace?   @relation(fields: [subraceId], references: [id])
-  subraceId  String?
-  class      Class?     @relation(fields: [classId], references: [id])
-  classId    String?
-  
-  level      Int       @default(1)
-  xp         Int       @default(0)
-  stats      Json      @default("{}")
+  race      Race?    @relation(fields: [raceId], references: [id])
+  raceId    String?
+  subrace   Subrace? @relation(fields: [subraceId], references: [id])
+  subraceId String?
+  class     Class?   @relation(fields: [classId], references: [id])
+  classId   String?
 
-  health     Int       @default(100)
-  energy     Int       @default(100)
-  skills     Json      @default("{}")
-  money      Int       @default(0)
+  level Int  @default(1)
+  xp    Int  @default(0)
+  stats Json @default("{}")
 
-  tasks      Task[]
-  badges     Badge[]
-  equipment  Equipment[]
+  health Int  @default(100)
+  energy Int  @default(100)
+  skills Json @default("{}")
+  money  Int  @default(0)
+
+  tasks     Task[]
+  badges    Badge[]
+  equipment Equipment[]
 }
+
 // ----------------------------
 // Races & Subraces
 // ----------------------------
 model Race {
-  id    String @id @default(uuid())
-  name  String @unique
-  subraces     Subrace[]
-  users User[]
+  id       String    @id @default(uuid())
+  name     String    @unique
+  subraces Subrace[]
+  users    User[]
 }
 
-
 model Subrace {
-  id       String  @id @default(uuid())
-  name     String
-  traits   Json?   // bonus stats or traits
-  race     Race    @relation(fields: [raceId], references: [id])
-  raceId   String
-  users    User[]
+  id     String @id @default(uuid())
+  name   String
+  traits Json? // bonus stats or traits
+  race   Race   @relation(fields: [raceId], references: [id])
+  raceId String
+  users  User[]
 }
 
 // ----------------------------
 // Classes
 // ----------------------------
 model Class {
-  id    String @id @default(uuid())
-  name  String @unique
-  users User[]
+  id          String  @id @default(uuid())
+  name        String  @unique
+  description String?
+  attributes  Json? // starting skills or bonuses
+  icon        String?
+  users       User[]
 }
 
 // ----------------------------
 // Equipment (tools for progression)
 // ----------------------------
 model Equipment {
-  id          String  @id @default(uuid())
-  user        User    @relation(fields: [userId], references: [id])
-  userId      String
-  name        String
-  type        String   // Tool, Armor, Consumable, Adventuring Gear
-  properties  Json?    // { energy: +10, skillBoost: 5, etc. }
-  quantity    Int      @default(1)
-  value       Int?
+  id         String @id @default(uuid())
+  user       User   @relation(fields: [userId], references: [id])
+  userId     String
+  name       String
+  type       String // Tool, Armor, Consumable, Adventuring Gear
+  properties Json? // { energy: +10, skillBoost: 5, etc. }
+  quantity   Int    @default(1)
+  value      Int?
 }
 
 // ----------------------------
@@ -90,8 +93,8 @@ model Task {
   title       String
   description String?
   xpReward    Int
-  statEffects Json?   // e.g., { health: +5, energy: +3, skills: { learning: +2 } }
-  completed   Boolean @default(false)
+  statEffects Json? // e.g., { health: +5, energy: +3, skills: { learning: +2 } }
+  completed   Boolean  @default(false)
   createdAt   DateTime @default(now())
 }
 

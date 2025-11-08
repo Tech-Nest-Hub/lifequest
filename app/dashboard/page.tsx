@@ -29,10 +29,6 @@ export default async function Dashboard() {
     )
   }
 
-  // Example fallback if stats are empty
-  const stats = dbUser.stats
-    ? (dbUser.stats as Record<string, number>)
-    : { STR: 10, DEX: 10, CON: 10, INT: 10, WIS: 10, CHA: 10 }
 
   return (
     <div>
