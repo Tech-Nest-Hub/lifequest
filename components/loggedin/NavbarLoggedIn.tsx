@@ -14,8 +14,8 @@ interface UserData {
   health: number
   energy: number
   money: number
-  raceId: string | null
-  classId: string | null
+  race: String | null
+  class: String | null
 }
 
 interface NavbarLoggedInProps {
@@ -124,7 +124,7 @@ export function NavbarLoggedIn({ user }: NavbarLoggedInProps) {
                     {user.username || 'Adventurer'}
                   </p>
                   <p className="text-xs text-cyan-400/70 leading-none mt-1">
-                    {user.raceId && user.classId ? `${user.raceId} ${user.classId}` : 'New Adventurer'}
+                    {user.race && user.class ? `${user.race} ${user.class}` : 'New Adventurer'}
                   </p>
                 </div>
                 
@@ -155,7 +155,7 @@ export function NavbarLoggedIn({ user }: NavbarLoggedInProps) {
                     </div>
                     <div className="flex items-center justify-between text-xs">
                       <span className="text-cyan-300">Level {user.level}</span>
-                      <span className="text-cyan-400/70">{user.raceId} {user.classId}</span>
+                      <span className="text-cyan-400/70">{user.race} {user.class}</span>
                     </div>
                   </div>
 

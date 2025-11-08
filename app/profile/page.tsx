@@ -11,6 +11,10 @@ export const ProfilePage = async () => {
   // Get user from your database
   const dbUser = await prisma.user.findUnique({
     where: { id: session?.user.id },
+    include: {
+      race: true,
+      class: true
+    }
   })
 
   if (!dbUser) {
@@ -31,8 +35,8 @@ export const ProfilePage = async () => {
         health: dbUser.health,
         energy: dbUser.energy,
         money: dbUser.money,
-        raceId: dbUser.raceId,
-        classId: dbUser.classId
+        race: dbUser.race?.name ?? "No Race",
+        class : dbUser.class?.name ?? "No Class",
       }} />
       <CharacterDashboard />
     </div>
