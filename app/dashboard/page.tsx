@@ -1,4 +1,5 @@
-import { ChartRadarDots } from "@/components/profile/radarcharts"
+import { NavbarLoggedIn } from "@/components/loggedin/NavbarLoggedIn"
+import CharacterDashboard from "@/components/profile/character"
 import prisma from "@/lib/prisma"
 import { createClient } from "@/utils/supabase/server"
 import { redirect } from "next/navigation"
@@ -13,6 +14,10 @@ export default async function Dashboard() {
 
   const dbUser = await prisma.user.findUnique({
     where: { id: session.user.id },
+    include: {
+      race: true,
+      class: true,
+    }
   })
 
   if (!dbUser) {
@@ -30,17 +35,19 @@ export default async function Dashboard() {
     : { STR: 10, DEX: 10, CON: 10, INT: 10, WIS: 10, CHA: 10 }
 
   return (
-    <div className="p-6 space-y-4">
-      <h1 className="text-2xl font-semibold">Welcome, {dbUser.username}!</h1>
-      <p>Level {dbUser.level} • XP: {dbUser.xp}</p>
-      <div className="grid grid-cols-3">
-    <section id="mylifeqest-profile-image" className="">
-      <h2 className="text-lg font-medium mb-2">Your Stats</h2>
-    </section>
-    <section id="mylifeqest-radar-chart" className="col-span-1">
-      <ChartRadarDots stats={stats} />
-    </section>
-      </div>
+    <div>
+      <NavbarLoggedIn user={{
+             id: dbUser.id,
+             username: dbUser.username,
+             email: dbUser.email,
+             level: dbUser.level,
+             health: dbUser.health,
+             energy: dbUser.energy,
+             money: dbUser.money,
+             race: dbUser.race?.name ?? "No Race",
+             class : dbUser.class?.name ?? "No Class",
+           }} />
+      <CharacterDashboard />
     </div>
   )
 }

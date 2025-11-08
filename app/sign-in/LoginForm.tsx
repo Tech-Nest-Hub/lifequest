@@ -16,8 +16,6 @@ import {
   FieldGroup,
 } from "@/components/ui/field"
 import { createClient } from "@/utils/supabase/client"
-import { getServerUser } from "@/utils/comps/getServerUser"
-import { redirect } from "next/navigation"
 
 
 export function LoginForm({
@@ -37,11 +35,11 @@ export function LoginForm({
     }
   }
   return (
-    <div className={cn("flex flex-col gap-6", className)} {...props}>
+    <div className={cn("flex flex-col gap-6 m-4", className)} {...props}>
       <Card>
         <CardHeader className="text-center">
-          <CardTitle className="text-xl">Welcome back</CardTitle>
-          <CardDescription>
+          <CardTitle className="text-xl mt-8">Welcome back</CardTitle>
+          <CardDescription className="mb-4">
             Login with your Google account
           </CardDescription>
         </CardHeader>
@@ -63,7 +61,7 @@ export function LoginForm({
 
 
               <Field>
-                <FieldDescription className="text-center">
+                <FieldDescription className="text-center mb-8">
                   Don&apos;t have an account? <a href="#">Sign up</a>
                 </FieldDescription>
               </Field>
