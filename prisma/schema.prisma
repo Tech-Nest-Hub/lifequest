@@ -42,10 +42,13 @@ model User {
 // Races & Subraces
 // ----------------------------
 model Race {
-  id       String    @id @default(uuid())
-  name     String    @unique
-  subraces Subrace[]
-  users    User[]
+  id          String    @id @default(uuid())
+  name        String    @unique
+  description String?
+  attributes  Json? // starting skills or bonuses
+  icon        String?
+  subraces    Subrace[]
+  users       User[]
 }
 
 model Subrace {

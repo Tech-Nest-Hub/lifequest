@@ -7,6 +7,7 @@ import { useRouter } from "next/navigation"
 import StepClass from "./components/StepClass"
 import StepName from "./components/StepName"
 import StepRace from "./components/StepRace"
+import { Button } from "@/components/ui/button"
 
 export default function OnboardingPage() {
   const [step, setStep] = useState(1)
@@ -20,7 +21,7 @@ export default function OnboardingPage() {
   const prevStep = () => setStep((s) => s - 1)
 
   return (
-    <div className="p-6 max-w-xl mx-auto space-y-6">
+    <div className="p-6 mx-auto space-y-6">
       {step === 1 && <StepRace selectedRace={raceId} onSelectRace={setRaceId} />}
       {step === 2 && <StepClass selectedClass={classId} onSelectClass={setClassId} />}
       {step === 3 && <StepName name={name} onChangeName={setName} />}
@@ -35,9 +36,27 @@ export default function OnboardingPage() {
         />
       )}
 
-      <div className="flex justify-between">
-        {step > 1 && <button onClick={prevStep}>Back</button>}
-        {step < 4 && <button onClick={nextStep} disabled={(step === 1 && !raceId) || (step === 2 && !classId) || (step === 3 && !name)}>Next</button>}
+      <div className="text-center gap-2 flex items-center justify-center">
+        <center> {step > 1 &&  <Button
+            onClick={prevStep}
+            disabled={(step === 1 && !raceId)
+              || (step === 2 && !classId) ||
+              (step === 3 && !name)}
+            variant="ghost"
+            className="text-zinc-400 hover:text-cyan-500 border border-zinc-700/50 hover:border-cyan-600"
+          >Back</Button>}</center>
+        <center>{step < 4 &&
+          <Button
+            onClick={nextStep}
+            disabled={(step === 1 && !raceId)
+              || (step === 2 && !classId) ||
+              (step === 3 && !name)}
+            variant="ghost"
+            className="text-zinc-400 hover:text-cyan-500 border border-zinc-700/50 hover:border-cyan-600"
+          >
+            Next
+          </Button>
+        }</center>
       </div>
     </div>
   )

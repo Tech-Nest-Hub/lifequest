@@ -7,8 +7,9 @@ export async function GET() {
       select: {
         id: true,
         name: true,
+        description: true,
+        icon: true,
       },
-      orderBy: { name: "asc" },
     })
     return NextResponse.json(races)
   } catch (err) {
