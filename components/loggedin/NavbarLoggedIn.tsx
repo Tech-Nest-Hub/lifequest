@@ -48,7 +48,7 @@ export function NavbarLoggedIn({ user }: NavbarLoggedInProps) {
 
   return (
     <nav className="sticky top-0 z-50 border-b border-cyan-500/20 bg-black/80 backdrop-blur-xl">
-      <div className="mx-auto max-w-7xl px-4 py-3 sm:px-6 lg:px-8">
+      <div className="mx-auto max-w-8xl px-4 py-3 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between">
           {/* Logo */}
           <Link 

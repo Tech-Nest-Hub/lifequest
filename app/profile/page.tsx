@@ -1,47 +1,24 @@
 import { NavbarLoggedIn } from '@/components/loggedin/NavbarLoggedIn'
 import CharacterDashboard from '@/components/profile/character'
-import prisma from '@/lib/prisma'
-import { createClient } from '@/utils/supabase/server'
+import React from 'react'
 
-export const ProfilePage = async () => {
-  // In your page component
-  const supabase = await createClient()
-  const { data: { session } } = await supabase.auth.getSession()
-
-  // Get user from your database
-  const dbUser = await prisma.user.findUnique({
-    where: { id: session?.user.id },
-    include: {
-      race: true,
-      class: true
-    }
-  })
-
-  if (!dbUser) {
-    return (
-      <div>
-        <h1>User not found</h1>
-        <p>Please contact support.</p>
-      </div>
-    )
-  }
+const Profile = () => {
   return (
-    <div className="">
+    <div className='w-full'>
       <NavbarLoggedIn user={{
-        id: dbUser.id,
-        username: dbUser.username,
-        email: dbUser.email,
-        level: dbUser.level,
-        health: dbUser.health,
-        energy: dbUser.energy,
-        money: dbUser.money,
-        race: dbUser.race?.name ?? "No Race",
-        class : dbUser.class?.name ?? "No Class",
-      }} />
-      <CharacterDashboard />
+             id: "123",
+             username: "ghost",
+             email: "mail",
+             level: 3,
+             health: 100,
+             energy: 100,
+             money: 100,
+             race: "human",
+             class: "warrior",
+           }} />
+           <CharacterDashboard/>
     </div>
-
   )
 }
 
-export default ProfilePage
+export default Profile

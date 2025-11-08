@@ -109,7 +109,7 @@ export default function CharacterDashboard() {
         />
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 max-w-7xl mx-auto relative z-10">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 max-w-8xl mx-auto relative z-10">
         {/* LEFT PANEL - Character Stats */}
         <div ref={statsRef} className="space-y-6">
           <LevelCard character={character} />
