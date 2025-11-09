@@ -19,7 +19,7 @@ export default function Leaderboard() {
   }, [])
 
 if (loading) return (
-  <div className="fixed inset-0 z-50 bg-gradient-to-br from-black to-cyan-950/20 flex items-center justify-center">
+  <div className="fixed inset-0 z-50 bg-linear-to-br from-black to-cyan-950/20 flex items-center justify-center">
     <div className="text-center space-y-4">
       <div className="w-12 h-12 border-4 border-cyan-500 border-t-transparent rounded-full animate-spin mx-auto"></div>
       <p className="text-cyan-300/70">Loading leaderboard...</p>
