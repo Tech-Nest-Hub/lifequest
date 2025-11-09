@@ -62,10 +62,10 @@ export default function AppSidebar() {
                       <TooltipTrigger asChild>
                         <SidebarMenuButton
                           asChild
-                          className="hover:bg-cyan-500/20 transition-colors group-data-[collapsible=icon]:h-12! group-data-[collapsible=icon]:w-12! group-data-[collapsible=icon]:mx-auto group-data-[collapsible=icon]:mt-2 group-data-[collapsible=icon]:justify-center"
+                          className="hover:bg-cyan-500/20 transition-colors group-data-[collapsible=icon]:h-12! group-data-[collapsible=icon]:w-12! group-data-[collapsible=icon]:mx-auto group-data-[collapsible=icon]:mt-2 group-data-[collapsible=icon]:justify-center text-xl mt-4"
                         >
                           <a href={item.url} className="flex items-center gap-4 px-3 py-3">
-                            <item.icon className="h-6 w-6 group-data-[collapsible=icon]:h-7 group-data-[collapsible=icon]:w-7 text-cyan-300 shrink-0" />
+                            <item.icon className="h-12 w-8 group-data-[collapsible=icon]:h-7 group-data-[collapsible=icon]:w-7 text-cyan-300 shrink-0" />
                             <span className="text-cyan-200 whitespace-nowrap group-data-[collapsible=icon]:hidden">
                               {item.title}
                             </span>
