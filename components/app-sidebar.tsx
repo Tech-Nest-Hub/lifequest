@@ -20,6 +20,7 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
+  SidebarTrigger,
 } from "@/components/ui/sidebar"
 import {
   Tooltip,
@@ -31,11 +32,12 @@ import {
 const items = [
   { title: "Dashboard", url: "/dashboard", icon: Home },
   { title: "Quests", url: "/quests", icon: Target },
-  { title: "Leaderboard", url: "/leaderboard", icon: Trophy },
   { title: "Party", url: "/party", icon: Users },
+  { title: "Events", url: "/events", icon: Users },
   { title: "Inventory", url: "/inventory", icon: Inbox },
-  { title: "Stats", url: "/stats", icon: BarChart3 },
-  { title: "Calendar", url: "/calendar", icon: Calendar },
+  { title: "Shop", url: "/stats", icon: BarChart3 },
+  { title: "Marketplace", url: "/calendar", icon: Calendar },
+  { title: "Leaderboard", url: "/leaderboard", icon: Trophy },
   { title: "Settings", url: "/settings", icon: Settings },
 ]
 
@@ -47,38 +49,24 @@ export default function AppSidebar() {
         className="transition-all duration-300 overflow-visible dark:bg-black"
       >
         <SidebarContent>
-          {/* Logo Section */}
-          <SidebarGroup className="border-b border-cyan-500/20 pb-6 mb-6">
-            <SidebarGroupLabel>
-              <div className="flex items-center gap-3 px-2">
-                <div className="rounded-lg bg-gradient-to-br from-cyan-500 to-blue-600 p-2 flex-shrink-0">
-                  <GamepadIcon className="h-6 w-6 text-white" />
-                </div>
-                <span className="bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent font-black text-lg whitespace-nowrap sidebar-expanded:block sidebar-collapsed:hidden">
-                  MyLifeQuest
-                </span>
-              </div>
-            </SidebarGroupLabel>
-          </SidebarGroup>
-
           {/* Navigation Menu */}
           <SidebarGroup>
             <SidebarGroupLabel className="text-xs uppercase tracking-wider text-cyan-400/60 px-2 sidebar-expanded:block sidebar-collapsed:hidden">
               Navigation
             </SidebarGroupLabel>
             <SidebarGroupContent>
-              <SidebarMenu>
+              <SidebarMenu className="space-y-2">
                 {items.map((item) => (
                   <SidebarMenuItem key={item.title}>
                     <Tooltip delayDuration={0}>
                       <TooltipTrigger asChild>
                         <SidebarMenuButton
                           asChild
-                          className="hover:bg-cyan-500/20 transition-colors"
+                          className="hover:bg-cyan-500/20 transition-colors group-data-[collapsible=icon]:h-12! group-data-[collapsible=icon]:w-12! group-data-[collapsible=icon]:mx-auto group-data-[collapsible=icon]:mt-2 group-data-[collapsible=icon]:justify-center"
                         >
-                          <a href={item.url} className="flex items-center gap-3 px-3 py-3">
-                            <item.icon className="h-5 w-5 text-cyan-300 flex-shrink-0" />
-                            <span className="text-cyan-200 whitespace-nowrap sidebar-expanded:block sidebar-collapsed:hidden">
+                          <a href={item.url} className="flex items-center gap-4 px-3 py-3">
+                            <item.icon className="h-6 w-6 group-data-[collapsible=icon]:h-7 group-data-[collapsible=icon]:w-7 text-cyan-300 shrink-0" />
+                            <span className="text-cyan-200 whitespace-nowrap group-data-[collapsible=icon]:hidden">
                               {item.title}
                             </span>
                           </a>
@@ -86,7 +74,7 @@ export default function AppSidebar() {
                       </TooltipTrigger>
                       <TooltipContent
                         side="right"
-                        className="bg-cyan-900 border-cyan-500 text-cyan-100 sidebar-expanded:hidden"
+                        className="bg-cyan-900 border-cyan-500 text-cyan-100"
                       >
                         {item.title}
                       </TooltipContent>
@@ -97,15 +85,9 @@ export default function AppSidebar() {
             </SidebarGroupContent>
           </SidebarGroup>
 
-          {/* Quick Stats - Only show when expanded */}
-          <SidebarGroup className="mt-auto border-t border-cyan-500/20 pt-6 sidebar-expanded:block sidebar-collapsed:hidden">
-            <SidebarGroupLabel className="text-xs uppercase tracking-wider text-cyan-400/60 px-2">
-              Quick Stats
-            </SidebarGroupLabel>
-          </SidebarGroup>
 
           {/* Mini Stats - Only show when collapsed */}
-          <SidebarGroup className="mt-auto border-t border-cyan-500/20 pt-6 sidebar-expanded:hidden sidebar-collapsed:block">
+          <SidebarGroup className="mt-auto border-t border-cyan-500/20 pt-6 sidebar-expanded:hidden">
             <SidebarGroupContent>
               <div className="flex flex-col items-center space-y-2 p-2">
                 <div className="text-cyan-400 font-bold text-lg">23</div>
