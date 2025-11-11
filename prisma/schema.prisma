@@ -17,6 +17,10 @@ model User {
   password  String? // ✅ make optional for Google users
   createdAt DateTime @default(now())
 
+    // --- Character attributes ---
+  gender    Gender   @default(MALE)
+  age       Int?     // Optional: can be null until user sets it
+
   race      Race?    @relation(fields: [raceId], references: [id])
   raceId    String?
   subrace   Subrace? @relation(fields: [subraceId], references: [id])
@@ -111,4 +115,9 @@ model Badge {
   name        String
   description String?
   unlockedAt  DateTime @default(now())
+}
+
+enum Gender {
+  MALE
+  FEMALE
 }
