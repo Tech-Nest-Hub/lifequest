@@ -29,6 +29,7 @@ export default async function Dashboard() {
     )
   }
   const characterData = {
+    id: dbUser.id,
     raceId: dbUser.race?.name ?? null,
     subraceId: dbUser.subraceId ?? null,
     classId: dbUser.class?.name ?? null,

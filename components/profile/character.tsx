@@ -12,6 +12,7 @@ import { ChartAreaInteractive } from "./AreaChart"
 import { ChartRadarDots } from "./radarcharts"
 
 interface Character {
+  id: string
   raceId: string | null
   subraceId: string | null
   classId: string | null
@@ -41,7 +42,7 @@ interface CharacterDashboardProps {
 }
 
 export default function CharacterDashboard({ characterData }: CharacterDashboardProps) {
-  const [character, setCharacter] = useState<Character>(characterData)
+  const [character] = useState<Character>(characterData)
 
   const [tasks, setTasks] = useState<Task[]>([
     { id: "1", title: "Yoga + Flexibility", category: "Health", completed: true },
