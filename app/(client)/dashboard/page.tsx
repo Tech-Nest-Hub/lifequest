@@ -28,7 +28,23 @@ export default async function Dashboard() {
       </div>
     )
   }
-
+  const characterData = {
+    raceId: dbUser.race?.name ?? null,
+    subraceId: dbUser.subraceId ?? null,
+    classId: dbUser.class?.name ?? null,
+    level: dbUser.level,
+    xp: dbUser.xp,
+    stats: dbUser.stats as {
+      physical: number
+      mental: number
+      emotional: number
+      spiritual: number
+      craft: number
+    },
+    health: dbUser.health,
+    energy: dbUser.energy,
+    money: dbUser.money,
+  }
 
   return (
     <div>
@@ -43,7 +59,7 @@ export default async function Dashboard() {
              race: dbUser.race?.name ?? "No Race",
              class : dbUser.class?.name ?? "No Class",
            }} />
-      <CharacterDashboard />
+      <CharacterDashboard characterData={characterData} />
     </div>
   )
 }
