@@ -23,7 +23,12 @@ type ChartRadarDotsProps = {
 export function ChartRadarDots({ stats }: ChartRadarDotsProps) {
   // Convert stats object to array for Recharts
   const chartData = Object.entries(stats || {}).map(([key, value]) => ({
-    stat: key,
+    stat:  key === "strength" ? "STR" :
+    key === "agility" ? "AGI" :
+    key === "intelligence" ? "INT" :
+    key === "luck" ? "LCK" :
+    key === "endurance" ? "END" :
+    key,
     value,
   }))
 
@@ -49,7 +54,8 @@ export function ChartRadarDots({ stats }: ChartRadarDotsProps) {
         >
           <RadarChart data={chartData}>
             <ChartTooltip cursor={false} content={<ChartTooltipContent />} />
-            <PolarAngleAxis dataKey="stat" />
+            <PolarAngleAxis dataKey="stat" tickFormatter={(value) => value.toUpperCase()} // or just (value) => value
+  tick={{ fontSize: 11 }}/>
             <PolarGrid />
             <Radar
               dataKey="value"

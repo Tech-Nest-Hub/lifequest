@@ -28,7 +28,7 @@ export function LevelCard({ character }: LevelCardProps) {
     )
   }, [])
 
-  const maxXP = 10000
+  const maxXP = 1000
   const xpPercent = (character.xp / maxXP) * 100
 
   return (
