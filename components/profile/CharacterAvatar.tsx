@@ -25,13 +25,19 @@ export function CharacterAvatar({ raceId, subraceId, classId }: CharacterAvatarP
   return (
     <div ref={avatarRef} className="relative bg-linear-to-br from-cyan-500/10 to-blue-500/10 border border-cyan-500/30 rounded-2xl overflow-hidden h-64 flex items-center justify-center backdrop-blur-sm">
       <div className="absolute inset-0 bg-linear-to-br from-cyan-500/5 to-blue-500/5" />
-      <div className="relative z-10 text-center">
-        <div className="w-20 h-20 bg-linear-to-br from-cyan-400 to-blue-500 rounded-full mx-auto mb-4 flex items-center justify-center">
-          <span className="text-2xl font-bold text-white">LV</span>
+      
+      {/* Character Image */}
+      <div className="relative z-10 w-full h-full flex items-center justify-center">
+        <img 
+          src="/guy_image.jpg" 
+          alt="Character Avatar"
+          className="w-full h-full object-cover"
+        />
+        
+        {/* Overlay with level badge */}
+        <div className="absolute bottom-4 right-4 w-12 h-12 bg-linear-to-br from-cyan-500 to-blue-600 rounded-full flex items-center justify-center shadow-lg border-2 border-white/20">
+          <span className="text-white font-bold text-sm">LV</span>
         </div>
-        <p className="text-sm text-cyan-300/60 capitalize">
-          {subraceId || raceId} {classId}
-        </p>
       </div>
     </div>
   )
