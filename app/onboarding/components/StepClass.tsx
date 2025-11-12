@@ -10,7 +10,7 @@ interface Class {
 
 interface StepClassProps {
   selectedClass: string | null
-  onSelectClass: (classId: string) => void
+  onSelectClass: (classId: string, className: string) => void
 }
 
 export default function StepClass({ selectedClass, onSelectClass }: StepClassProps) {
@@ -33,7 +33,7 @@ export default function StepClass({ selectedClass, onSelectClass }: StepClassPro
           <Button
             key={cls.id}
             variant={selectedClass === cls.id ? "default" : "outline"}
-            onClick={() => onSelectClass(cls.id)}
+            onClick={() => onSelectClass(cls.id, cls.name)}
           >
             {cls.name}
           </Button>

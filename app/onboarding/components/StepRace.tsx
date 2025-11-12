@@ -12,8 +12,9 @@ interface Race {
 
 interface StepRaceProps {
   selectedRace: string | null
-  onSelectRace: (raceId: string) => void
+  onSelectRace: (raceId: string, raceName: string) => void
 }
+
 
 const RaceIcon = ({ raceId, isSelected }: { raceId: string; isSelected: boolean }) => {
   const iconProps = {
@@ -90,7 +91,8 @@ export default function StepRace({ selectedRace, onSelectRace }: StepRaceProps) 
                   ? "border-cyan-500 bg-linear-to-br from-cyan-500/20 to-blue-500/20 shadow-2xl shadow-cyan-500/20 scale-105"
                   : "border-cyan-500/30 bg-linear-to-br from-cyan-500/10 to-blue-500/10 hover:border-cyan-500/50 hover:scale-102"
               }`}
-              onClick={() => onSelectRace(race.id)}
+              onClick={() => onSelectRace(race.id, race.name)}
+
             >
               {/* Selection Indicator */}
               {isSelected && (
