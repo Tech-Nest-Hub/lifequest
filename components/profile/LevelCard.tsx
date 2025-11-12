@@ -1,6 +1,6 @@
 "use client"
 
-import { useRef, useEffect, useState, TransitionStartFunction } from "react"
+import { useRef, useEffect, useState } from "react"
 import gsap from "gsap"
 
 interface Character {
@@ -18,10 +18,16 @@ interface LevelCardProps {
 
 export function LevelCard({ character }: LevelCardProps) {
   const cardRef = useRef<HTMLDivElement>(null)
-  const [xp, setXp] = useState(character.xp)
-  const [level, setLevel] = useState(character.level)
-  const maxXP = 1000
-  const xpPercent = (xp / maxXP) * 100
+  const [xp] = useState(character.xp)
+  const [level] = useState(character.level)
+
+  // ✅ Compute maxXP dynamically (same as backend)
+  const getRequiredXP = (lvl: number) => {
+    return Math.round(Math.pow(lvl + 1, 1.8) + (lvl + 1) * 4)
+  }
+
+  const maxXP = getRequiredXP(level)
+  const xpPercent = Math.min((xp / maxXP) * 100, 100)
 
   useEffect(() => {
     if (!cardRef.current) return
@@ -31,24 +37,6 @@ export function LevelCard({ character }: LevelCardProps) {
       { opacity: 1, x: 0, duration: 0.8, ease: "power3.out" }
     )
   }, [])
-
-const handleGainXP = async () => {
-  const res = await fetch("/api/xp", {
-    method: "POST",
-    body: JSON.stringify({ userId: character.id, amount: 200 }),
-    headers: { "Content-Type": "application/json" },
-  })
-
-  if (!res.ok) {
-    console.error("API error", res.status)
-    return
-  }
-
-  const updatedUser = await res.json() // now this will succeed
-  setXp(updatedUser.xp)
-  setLevel(updatedUser.level)
-}
-
 
   return (
     <div
@@ -79,14 +67,6 @@ const handleGainXP = async () => {
           ></div>
         </div>
       </div>
-
-      {/* Simulate XP Gain */}
-      <button
-        onClick={handleGainXP}
-        className="px-4 py-2 bg-cyan-600 text-white rounded-lg text-sm hover:bg-cyan-700 transition"
-      >
-        Gain XP
-      </button>
     </div>
   )
 }
