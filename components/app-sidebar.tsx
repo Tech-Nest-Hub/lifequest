@@ -90,8 +90,8 @@ export default function AppSidebar() {
           <SidebarGroup className="mt-auto border-t border-cyan-500/20 pt-6 sidebar-expanded:hidden">
             <SidebarGroupContent>
               <div className="flex flex-col items-center space-y-2 p-2">
-                <div className="text-cyan-400 font-bold text-lg">23</div>
-                <div className="text-cyan-300/70 text-xs">LVL</div>
+                <div className="text-cyan-400 font-bold text-lg">V 1</div>
+                <div className="text-cyan-300/70 text-xs">MLQ</div>
               </div>
             </SidebarGroupContent>
           </SidebarGroup>

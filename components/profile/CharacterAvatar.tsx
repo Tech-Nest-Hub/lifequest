@@ -36,7 +36,7 @@ export function CharacterAvatar({ raceId, subraceId, classId }: CharacterAvatarP
         
         {/* Overlay with level badge */}
         <div className="absolute bottom-4 right-4 w-12 h-12 bg-linear-to-br from-cyan-500 to-blue-600 rounded-full flex items-center justify-center shadow-lg border-2 border-white/20">
-          <span className="text-white font-bold text-sm">LV</span>
+          <span className="text-white font-bold text-sm">MLQ</span>
         </div>
       </div>
     </div>
