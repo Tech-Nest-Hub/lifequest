@@ -8,18 +8,40 @@ datasource db {
 }
 
 // ----------------------------
+// Enums
+// ----------------------------
+enum Gender {
+  MALE
+  FEMALE
+}
+
+enum Role {
+  USER
+  ADMIN
+}
+
+enum UserQuestStatus {
+  NOT_STARTED
+  IN_PROGRESS
+  COMPLETED
+  CLAIMED
+  REJECTED
+}
+
+// ----------------------------
 // Users (Players / Characters)
 // ----------------------------
 model User {
   id        String   @id @default(uuid())
   username  String   @unique
   email     String   @unique
-  password  String? // ✅ make optional for Google users
+  password  String? // optional for OAuth users
   createdAt DateTime @default(now())
 
-    // --- Character attributes ---
+  // profile / character attributes
   gender    Gender   @default(MALE)
-  age       Int?     // Optional: can be null until user sets it
+  age       Int?
+  role      Role     @default(USER)
 
   race      Race?    @relation(fields: [raceId], references: [id])
   raceId    String?
@@ -37,9 +59,15 @@ model User {
   skills Json @default("{}")
   money  Int  @default(0)
 
-  tasks     Task[]
-  badges    Badge[]
-  equipment Equipment[]
+  // relations
+  tasks           Task[]           // personal quick tasks
+  badges          Badge[]
+  equipment       Equipment[]
+  userQuests      UserQuest[]      // accepted quests
+  pomodoroSession PomodoroSession[]// sessions run by user
+  questRequests   QuestRequest[]   // user-submitted quest requests
+
+  inventories Inventory[]
 }
 
 // ----------------------------
@@ -49,7 +77,7 @@ model Race {
   id          String    @id @default(uuid())
   name        String    @unique
   description String?
-  attributes  Json? // starting skills or bonuses
+  attributes  Json?     // starting bonuses
   icon        String?
   subraces    Subrace[]
   users       User[]
@@ -58,7 +86,7 @@ model Race {
 model Subrace {
   id     String @id @default(uuid())
   name   String
-  traits Json? // bonus stats or traits
+  traits Json?
   race   Race   @relation(fields: [raceId], references: [id])
   raceId String
   users  User[]
@@ -71,7 +99,7 @@ model Class {
   id          String  @id @default(uuid())
   name        String  @unique
   description String?
-  attributes  Json? // starting skills or bonuses
+  attributes  Json?
   icon        String?
   users       User[]
 }
@@ -85,13 +113,13 @@ model Equipment {
   userId     String
   name       String
   type       String // Tool, Armor, Consumable, Adventuring Gear
-  properties Json? // { energy: +10, skillBoost: 5, etc. }
+  properties Json?
   quantity   Int    @default(1)
   value      Int?
 }
 
 // ----------------------------
-// Tasks = Quests for Life Progression
+// Tasks = simple user tasks (existing model)
 // ----------------------------
 model Task {
   id          String   @id @default(uuid())
@@ -100,7 +128,7 @@ model Task {
   title       String
   description String?
   xpReward    Int
-  statEffects Json? // e.g., { health: +5, energy: +3, skills: { learning: +2 } }
+  statEffects Json?   // e.g., { health: +5, energy: +3, skills: { learning: +2 } }
   completed   Boolean  @default(false)
   createdAt   DateTime @default(now())
 }
@@ -117,7 +145,103 @@ model Badge {
   unlockedAt  DateTime @default(now())
 }
 
-enum Gender {
-  MALE
-  FEMALE
+// ----------------------------
+// MASTER Quest: blueprint of a quest (system-level)
+// ----------------------------
+model Quest {
+  id             String   @id @default(uuid())
+  title          String
+  slug           String   @unique
+  description    String?
+  category       String?     // e.g., "physical","social","mind"
+  xpReward       Int        @default(100)
+  currencyReward Int?       // optional money/coins
+  statEffects    Json?      // e.g., { "strength": 2 }
+  // requiredAction stores the verification/target for the quest, e.g.
+  // { "type":"pomodoro", "minutes":25 } or { "type":"manual","check":"photo" }
+  requiredAction Json?
+  isRepeatable   Boolean    @default(false)
+  minLevel       Int?       // min level to unlock
+  createdBy      String?    // admin who created it
+  createdAt      DateTime   @default(now())
+
+  // Relations
+  userQuests UserQuest[]
+}
+
+// ----------------------------
+// UserQuest: per-player accepted quest + progress + verification
+// ----------------------------
+model UserQuest {
+  id         String         @id @default(uuid())
+  user       User           @relation(fields: [userId], references: [id])
+  userId     String
+  quest      Quest          @relation(fields: [questId], references: [id])
+  questId    String
+  status     UserQuestStatus @default(NOT_STARTED)
+  // progress: freeform JSON, e.g., { "pomodorosCompleted": 2, "minutes": 50 }
+  progress   Json?          
+  // evidence/proof may be a URL or note (admin can inspect)
+  proof      String?        
+  startedAt  DateTime?
+  completedAt DateTime?
+  claimedAt  DateTime?
+  createdAt  DateTime       @default(now())
+
+  // Verification audit (who approved/rejected)
+  reviewedBy String?        // admin userId
+  reviewNote String?
+  reviewedAt DateTime?
+
+  pomodoroSessions PomodoroSession[]
+}
+
+// ----------------------------
+// Pomodoro sessions linked to quests
+// ----------------------------
+model PomodoroSession {
+  id           String   @id @default(uuid())
+  user         User     @relation(fields: [userId], references: [id])
+  userId       String
+  // optional link to a userQuest to automatically increment progress
+  userQuest    UserQuest? @relation(fields: [userQuestId], references: [id])
+  userQuestId  String?
+  category     String?   // "study","exercise","creative"
+  focusMinutes Int      @default(25)
+  breakMinutes Int      @default(5)
+  completed    Boolean  @default(false)
+  xpAwarded    Int?     
+  startedAt    DateTime @default(now())
+  endedAt      DateTime?
+}
+
+// ----------------------------
+// Quest request (user asks admin to add a new quest to master list)
+// ----------------------------
+model QuestRequest {
+  id          String   @id @default(uuid())
+  user        User     @relation(fields: [userId], references: [id])
+  userId      String
+  title       String
+  description String?
+  category    String?
+  xpReward    Int?     @default(100)
+  requiredAction Json?
+  status      UserQuestStatus @default(NOT_STARTED) // reuse statuses: NOT_STARTED => pending, COMPLETED => approved, REJECTED => rejected (you can map)
+  adminNote   String?
+  reviewedBy  String?
+  reviewedAt  DateTime?
+  createdAt   DateTime @default(now())
+}
+
+// ----------------------------
+// Optional: Inventory (if you later want item-based quests)
+// ----------------------------
+model Inventory {
+  id        String @id @default(uuid())
+  user      User   @relation(fields: [userId], references: [id])
+  userId    String
+  itemKey   String
+  quantity  Int     @default(0)
+  updatedAt DateTime @updatedAt
 }
