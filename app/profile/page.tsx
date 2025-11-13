@@ -31,6 +31,7 @@ export default async function Profile() {
 
   // ✅ Create character data object for the dashboard
   const characterData = {
+    id : dbUser.id,
     raceId: dbUser.race?.name ?? null,
     subraceId: dbUser.subraceId ?? null,
     classId: dbUser.class?.name ?? null,
