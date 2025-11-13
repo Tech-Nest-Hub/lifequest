@@ -32,11 +32,15 @@ export async function middleware(request: NextRequest) {
   // Refresh session and update cookies if needed
   await supabase.auth.getSession();
 
+
+
+
   return response;
 }
 
 export const config = {
   matcher: [
+    "/admin/:path*",
     /*
      * Match all request paths except for the ones starting with:
      * - _next/static (static files)
