@@ -1,7 +1,8 @@
+import QuestDashboard from "./(components)/QuestDashboard"
 
 const Quests = () => {
   return (
-    <div>Quests</div>
+    <QuestDashboard/>
   )
 }
 
