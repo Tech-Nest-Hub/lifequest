@@ -1,9 +1,5 @@
-import QuestDashboard from "./(components)/QuestDashboard"
+import { QuestBoard } from "./(components)/QuestBoard";
 
-const Quests = () => {
-  return (
-    <QuestDashboard/>
-  )
+export default function QuestPage() {
+  return <QuestBoard />
 }
-
-export default Quests
