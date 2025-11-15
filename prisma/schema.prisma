@@ -27,7 +27,13 @@ enum UserQuestStatus {
   CLAIMED
   REJECTED
 }
-
+enum QuestType {
+  DAILY
+  MAIN
+  SIDE
+  POMODORO
+  PREMIUM
+}
 // ----------------------------
 // Users (Players / Characters)
 // ----------------------------
@@ -164,6 +170,10 @@ model Quest {
   minLevel       Int?       // min level to unlock
   createdBy      String?    // admin who created it
   createdAt      DateTime   @default(now())
+
+   type        QuestType @default(MAIN)  // Add this line
+  isDaily     Boolean   @default(false) // Or use this for simple daily flag
+  maxCompletions Int?   @default(1)     // For daily limits
 
   // Relations
   userQuests UserQuest[]
