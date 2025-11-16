@@ -131,3 +131,6 @@ Stats evolve based on activity type:
 ## 💡 Vision Summary
 
 > "LifeQuest turns your daily grind into an epic adventure. You are the hero — your tasks are quests, your growth is your level-up, and every day you become a stronger version of yourself."
+
+
+need to change the schema and re do this

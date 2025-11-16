@@ -8,6 +8,7 @@ import StepClass from "./components/StepClass"
 import StepName from "./components/StepName"
 import { StepSummary } from "./components/StepSummary"
 import { Button } from "@/components/ui/button"
+import StepAge from "./components/StepAge"
 
 export default function OnboardingPage() {
   const [step, setStep] = useState(1)
@@ -19,6 +20,7 @@ export default function OnboardingPage() {
   // class
   const [classId, setClassId] = useState<string | null>(null)
   const [className, setClassName] = useState<string | null>(null)
+  const [age, setAge] = useState<Number | null>(0)
 
   // name
   const [name, setName] = useState("")
@@ -56,8 +58,12 @@ export default function OnboardingPage() {
           onChangeName={setName}
         />
       )}
-
-      {step === 4 && raceId && classId && (
+      {
+        step === 4 && (
+          <StepAge />
+        )
+      }
+      {step === 5 && raceId && classId && (
         <StepSummary
           name={name}
           raceName={raceName || raceId}
