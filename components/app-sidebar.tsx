@@ -64,6 +64,7 @@ export default function AppSidebar() {
                         <SidebarMenuButton
                           asChild
                           onMouseEnter={playHover}
+                          onClick={playClick}
                           className="hover:bg-cyan-500/20 transition-colors group-data-[collapsible=icon]:h-12! group-data-[collapsible=icon]:w-12! group-data-[collapsible=icon]:mx-auto group-data-[collapsible=icon]:mt-2 group-data-[collapsible=icon]:justify-center text-xl mt-4"
                         >
                           <a href={item.url} className="flex items-center gap-4 px-3 py-3">
