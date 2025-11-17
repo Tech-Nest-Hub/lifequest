@@ -58,11 +58,13 @@ export default function OnboardingPage() {
           onChangeName={setName}
         />
       )}
-      {
-        step === 4 && (
-          <StepAge />
-        )
-      }
+{step === 4 && (
+  <StepAge
+    age={age as number}
+    onChangeAge={(value:any) => setAge(value)}
+  />
+)}
+
       {step === 5 && raceId && classId && (
         <StepSummary
           name={name}

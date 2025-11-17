@@ -14,6 +14,7 @@ export async function GET() {
       energy: true,
       skills: true,
       money: true,
+      age: true,
     },
   });
   return NextResponse.json(users);
