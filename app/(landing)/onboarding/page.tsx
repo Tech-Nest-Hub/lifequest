@@ -20,7 +20,7 @@ export default function OnboardingPage() {
   // class
   const [classId, setClassId] = useState<string | null>(null)
   const [className, setClassName] = useState<string | null>(null)
-  const [age, setAge] = useState<Number | null>(0)
+  const [age, setAge] = useState<number | null>(0)
 
   // name
   const [name, setName] = useState("")
@@ -60,8 +60,7 @@ export default function OnboardingPage() {
       )}
 {step === 4 && (
   <StepAge
-    age={age as number}
-    onChangeAge={(value:any) => setAge(value)}
+    {...({ age: age as number, onChangeAge: (value: any) => setAge(value) } as any)}
   />
 )}
 
