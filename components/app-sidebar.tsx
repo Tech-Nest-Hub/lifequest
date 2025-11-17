@@ -5,7 +5,6 @@ import {
   Home,
   Inbox,
   Settings,
-  GamepadIcon,
   Trophy,
   Users,
   BarChart3,
@@ -20,7 +19,6 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-  SidebarTrigger,
 } from "@/components/ui/sidebar"
 import {
   Tooltip,
@@ -28,6 +26,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip"
+import useSound from "@/hooks/useSound"
 
 const items = [
   { title: "Dashboard", url: "/dashboard", icon: Home },
@@ -42,6 +41,8 @@ const items = [
 ]
 
 export default function AppSidebar() {
+  const playHover = useSound("/sounds/button_hover.mp3")
+  const playClick = useSound("/sounds/button_onClick.wav")
   return (
     <TooltipProvider>
       <Sidebar
@@ -62,6 +63,7 @@ export default function AppSidebar() {
                       <TooltipTrigger asChild>
                         <SidebarMenuButton
                           asChild
+                          onMouseEnter={playHover}
                           className="hover:bg-cyan-500/20 transition-colors group-data-[collapsible=icon]:h-12! group-data-[collapsible=icon]:w-12! group-data-[collapsible=icon]:mx-auto group-data-[collapsible=icon]:mt-2 group-data-[collapsible=icon]:justify-center text-xl mt-4"
                         >
                           <a href={item.url} className="flex items-center gap-4 px-3 py-3">
