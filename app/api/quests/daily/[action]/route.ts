@@ -4,8 +4,9 @@ import prisma from "@/lib/prisma"
 
 export async function POST(
   request: Request,
-  { params }: { params: { action: string } }
+context: { params: Promise<{ action: string }> }
 ) {
+  const { action } = await context.params
   try {
     const supabase = await createClient()
     const { data: { session } } = await supabase.auth.getSession()
@@ -14,7 +15,6 @@ export async function POST(
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
     }
 
-    const { action } = params
     const body = await request.json()
 
     if (action === "start") {
