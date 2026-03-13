@@ -23,8 +23,18 @@ export async function GET(request: Request) {
   }
 
   const email = user.email
-  const username = user.user_metadata.full_name ?? email.split("@")[0]
+const baseUsername = (user.user_metadata.full_name ?? email.split("@")[0])
+  .replace(/\s+/g, "_")
+  .toLowerCase()
 
+// Check if username exists, if so add random suffix
+const existingUsername = await prisma.user.findFirst({
+  where: { username: baseUsername }
+})
+const username = existingUsername 
+  ? `${baseUsername}_${Math.floor(Math.random() * 9000) + 1000}` 
+  : baseUsername
+  
   let dbUser = await prisma.user.findUnique({
     where: { id: user.id },
   })
